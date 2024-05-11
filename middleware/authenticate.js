@@ -9,10 +9,7 @@ const authenticate = async (req, res, next) => {
     }
 
     try {
-        // Xác thực token sử dụng khóa bí mật
-        const decoded = jwt.verify(token, 'JackOr');
-
-        // Thêm thông tin người dùng vào đối tượng req
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.user.id).select('-password');
         if (!user) {
             return res.status(401).json({ msg: 'Token is not valid' });
